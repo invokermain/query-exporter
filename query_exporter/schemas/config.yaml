@@ -149,6 +149,9 @@ definitions:
       description:
         title: A text description of the metric use
         type: string
+      forgetful:
+        title: For gauge metrics, causes the labelset to not persist between queries
+        type: boolean
       labels:
         title: Labels associated to the metric
         type: array

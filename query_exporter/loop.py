@@ -148,6 +148,16 @@ class QueryLoop:
                 )
                 self._doomed_queries[query.name].add(dbname)
         else:
+
+            metrics_in_results = set(result.metric for result in metric_results.results)
+            for metric in metrics_in_results:
+                cfg_metric = self._config.metrics[metric]
+                if cfg_metric.type == 'gauge' and cfg_metric.config.get('forgetful'):
+                    self._logger.info(
+                        f"forgetting {metric}"
+                    )
+                    self._registry._metrics[metric]._metrics = {}
+
             for result in metric_results.results:
                 self._update_metric(
                     db, result.metric, result.value, labels=result.labels
